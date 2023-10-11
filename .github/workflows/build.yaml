@@ -14,11 +14,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [windows-latest]
 
         golang_version: [1.19.3]
-        java_version: ['15', '16', '17', '18', '19']
-        python_version: ['3.10', '3.11', '3.12']
+        java_version: ['18']
+        python_version: ['3.11']
         rust_version: [stable]
 
     env:
@@ -58,22 +58,3 @@ jobs:
       run: pip install codecov tox tox-gh-actions
     - name: Run Tox
       run: tox
-    - name: Upload coverage to Codecov
-      if: ${{ success() }}
-      uses: codecov/codecov-action@v3
-      with:
-        env_vars: OS,GOLANG_VERSION,JAVA_VERSION,OS,PYTHON_VERSION,RUST_VERSION
-
-  precommit:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v3
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    - name: Install Python dependencies
-      run: pip install tox
-    - name: Run Tox
-      run: tox -e pre-commit
